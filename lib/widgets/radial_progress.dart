@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'dart:ui';
 import 'dart:math';
 import 'dart:core';
@@ -55,22 +56,64 @@ class RadialProgress extends StatefulWidget {
 
 class _RadialProgressState extends State<RadialProgress>{
 	int timeCompleted;
-	bool timerRunning = false;
+	bool timerRunning = false, shouldPlaySound = false;
+	AssetsAudioPlayer player;
 	Timer timer;
 
 	@override
 	void initState() {
+		player = AssetsAudioPlayer();
 		timeCompleted = 0;
 		// totalTime = 60;
 		timer = Timer.periodic(Duration(seconds: 1), (Timer t) => {
 			setState((){
-				timeCompleted = !timerRunning?timeCompleted:timeCompleted<widget.totalTime?timeCompleted+1:0;
-				
+				if(timeCompleted >= widget.totalTime){
+					timerRunning = !timerRunning;
+					timeCompleted = 0;
+					playAlarm();
+				}
+				else if(timerRunning){
+					timeCompleted += 1;
+				}
+				// timeCompleted = !timerRunning?timeCompleted:timeCompleted<widget.totalTime?timeCompleted+1:0;	
 			})
 		});
 		super.initState();
 	}
 
+	Future playAlarm() async {
+		player.open(AssetsAudio(
+				asset: "time-over.mp3",
+				folder: "assets/audio/",
+		));
+		showDialog(
+			context: context,
+			builder: (BuildContext context) {
+				return AlertDialog(
+					title: Text("Time Over!"),
+					content: Text("Take a break."),
+					actions: <Widget>[
+						FlatButton(
+							child: new Text("Close"),
+							onPressed: () {
+								stop();
+								Navigator.of(context).pop();
+							},
+						),
+					],
+				);
+			}
+		);
+	}
+
+	void pause() {
+		player.pause();
+	}
+
+	void stop() {
+		player.stop();
+	}
+	
 	@override
 	void dispose() {
 		timer?.cancel();

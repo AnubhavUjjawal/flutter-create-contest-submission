@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/splash_screen.dart';
+import 'screens/home_screen.dart';
 import 'routes.dart';
 
 void main() => runApp(MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
 				primarySwatch: Colors.red,
 				buttonColor: Colors.redAccent.withOpacity(0.3)
 			),
-			home: SplashScreen(),
+			home: HomeScreen(),
 			routes: routes,
 		);
 	}

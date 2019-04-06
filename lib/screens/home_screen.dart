@@ -10,15 +10,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>{
 	Map<String, int> _tasks = {
-		"15 minutes": 15*60,
-		"30 minutes": 30*60,
-		"45 minutes": 45*60,
-		"60 minutes": 60*60
+		"15 minutes": 15,
+		"30 minutes": 30,
+		"45 minutes": 45,
+		"60 minutes": 60
 	};
 	int _selectedTask;
 	@override
   void initState() {
-    _selectedTask = 15*60;
+    _selectedTask = 15;
     super.initState();
   }
 	@override
